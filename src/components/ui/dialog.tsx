@@ -157,19 +157,6 @@ function DialogContent({
             {...props}
           >
             {children}
-            <button
-              type="button"
-              onClick={handleClose}
-              className="absolute text-xl font-light transition-colors hover:text-[#4338ca] focus:outline-none"
-              style={{
-                top: "16px",
-                right: "16px",
-                color: "#1e1b4b",
-              }}
-            >
-              <XIcon className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </button>
           </div>
         </div>
       </>
