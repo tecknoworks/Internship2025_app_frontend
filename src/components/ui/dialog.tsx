@@ -74,8 +74,9 @@ function DialogOverlay({ className, style, ...props }: React.ComponentProps<"div
       data-dialog-overlay
       className={cn("fixed inset-0 z-[1000]", className)}
       style={{
-        backgroundColor: "rgba(12, 10, 29, 0.65)",
-        backdropFilter: "blur(6px)",
+        backgroundColor: "rgba(12, 10, 29, 0.85)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
         ...style,
       }}
       {...props}
@@ -156,6 +157,15 @@ function DialogContent({
             tabIndex={-1}
             {...props}
           >
+            <button
+              onClick={handleClose}
+              className="absolute right-4 top-4 rounded-full p-1 opacity-70 ring-offset-white transition-all hover:opacity-100 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none"
+              style={{ zIndex: 10 }}
+              aria-label="Close"
+            >
+              <XIcon className="h-6 w-6" />
+              <span className="sr-only">Close</span>
+            </button>
             {children}
           </div>
         </div>

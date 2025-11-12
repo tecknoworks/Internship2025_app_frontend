@@ -6,7 +6,7 @@ import { Badge } from "./ui/badge";
 import { StarRating } from "./StarRating";
 import { EditSkillModal } from "./EditSkillModal";
 import { AddSkillModal } from "./AddSkillModal";
-import { Award, Plus, Edit, History, Briefcase } from "lucide-react";
+import { Award, Plus, Edit, History, Briefcase, MessageSquare } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import {
   Table,
@@ -23,6 +23,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 interface Skill {
   id: number;
@@ -64,6 +71,8 @@ export function MySkillsContent() {
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<{ skillName: string; feedback: string; status: string } | null>(null);
 
   const user = {
     name: "Sarah Johnson",
@@ -119,12 +128,17 @@ export function MySkillsContent() {
     });
   };
 
+  const handleViewFeedback = (skillName: string, feedback: string, status: string) => {
+    setSelectedFeedback({ skillName, feedback, status });
+    setIsFeedbackModalOpen(true);
+  };
+
   // Mock history data
   const skillHistory = [
-    { id: 1, skillName: "React Development", action: "Updated level from 4 to 5", date: "Nov 15, 2024", status: "Approved" },
-    { id: 2, skillName: "TypeScript", action: "Updated level from 3 to 4", date: "Nov 10, 2024", status: "Approved" },
-    { id: 3, skillName: "Agile Methodology", action: "Added new skill", date: "Nov 8, 2024", status: "Approved" },
-    { id: 4, skillName: "Team Leadership", action: "Updated level from 3 to 4", date: "Nov 5, 2024", status: "Pending" },
+    { id: 1, skillName: "React Development", action: "Updated level from 4 to 5", date: "Nov 15, 2024", status: "Approved", feedback: "Excellent progress! Your recent work on the new dashboard demonstrates strong React expertise. The component architecture and state management patterns you've implemented are top-notch." },
+    { id: 2, skillName: "TypeScript", action: "Updated level from 3 to 4", date: "Nov 10, 2024", status: "Approved", feedback: "Great improvement! Your use of advanced TypeScript features like generics and utility types in the latest project shows significant growth in this skill." },
+    { id: 3, skillName: "Agile Methodology", action: "Added new skill", date: "Nov 8, 2024", status: "Approved", feedback: "Good addition to your skill set. Your active participation in sprint planning and retrospectives validates this skill level." },
+    { id: 4, skillName: "Team Leadership", action: "Updated level from 3 to 4", date: "Nov 5, 2024", status: "Pending", feedback: "Under review. We'll assess this based on the upcoming Q4 project leadership outcomes." },
   ];
 
   return (
@@ -267,6 +281,7 @@ export function MySkillsContent() {
                     <TableHead className="text-base">Action</TableHead>
                     <TableHead className="text-base">Date</TableHead>
                     <TableHead className="text-base">Status</TableHead>
+                    <TableHead className="text-base">Feedback</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -279,13 +294,24 @@ export function MySkillsContent() {
                         <Badge
                           className="border"
                           style={{
-                            backgroundColor: item.status === "Approved" ? '#dcfce7' : item.status === "Pending" ? '#fef9c3' : '#fee2e2',
-                            color: item.status === "Approved" ? '#15803d' : item.status === "Pending" ? '#854d0e' : '#991b1b',
-                            borderColor: item.status === "Approved" ? '#86efac' : item.status === "Pending" ? '#fde047' : '#fca5a5'
+                            backgroundColor: item.status === "Approved" ? '#69f69aff' : item.status === "Pending" ? '#ebe48fff' : '#fee2e2',
+                            color: item.status === "Approved" ? '#045421ff' : item.status === "Pending" ? '#854d0e' : '#991b1b',
+                            borderColor: item.status === "Approved" ? '#86efac' : item.status === "Pending" ? '#f6d325ff' : '#fca5a5'
                           }}
                         >
                           {item.status}
                         </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleViewFeedback(item.skillName, item.feedback, item.status)}
+                          className="hover:bg-blue-50"
+                        >
+                          <MessageSquare className="h-4 w-4 mr-2" />
+                          View Feedback
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -312,6 +338,51 @@ export function MySkillsContent() {
         onClose={() => setIsAddModalOpen(false)}
         onAdd={handleAddSkill}
       />
+
+      {/* Feedback Modal */}
+      <Dialog open={isFeedbackModalOpen} onOpenChange={setIsFeedbackModalOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <MessageSquare className="h-6 w-6 text-blue-600" />
+              Manager Feedback
+            </DialogTitle>
+            <DialogDescription>
+              Feedback for: <span className="font-semibold text-gray-900">{selectedFeedback?.skillName}</span>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-gray-600">Status:</span>
+              <Badge
+                className="border"
+                style={{
+                  backgroundColor: selectedFeedback?.status === "Approved" ? '#dcfce7' : selectedFeedback?.status === "Pending" ? '#fef9c3' : '#fee2e2',
+                  color: selectedFeedback?.status === "Approved" ? '#15803d' : selectedFeedback?.status === "Pending" ? '#854d0e' : '#991b1b',
+                  borderColor: selectedFeedback?.status === "Approved" ? '#86efac' : selectedFeedback?.status === "Pending" ? '#fde047' : '#fca5a5'
+                }}
+              >
+                {selectedFeedback?.status}
+              </Badge>
+            </div>
+            <div className="rounded-lg border-2 bg-gray-50 p-4">
+              <p className="text-sm font-medium text-gray-600 mb-2">Feedback:</p>
+              <p className="text-base text-gray-800 leading-relaxed">
+                {selectedFeedback?.feedback}
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <Button
+              onClick={() => setIsFeedbackModalOpen(false)}
+              style={{ backgroundColor: '#7c3aed' }}
+              className="hover:opacity-90"
+            >
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }

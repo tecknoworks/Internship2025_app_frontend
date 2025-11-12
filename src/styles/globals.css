@@ -203,7 +203,9 @@ html {
 
 /* Ensure custom dialogs render as centered popups */
 [data-dialog-overlay] {
-  background-color: rgba(12, 10, 29, 0.58);
+  background-color: rgba(12, 10, 29, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
 }
 
 [data-dialog-content] {

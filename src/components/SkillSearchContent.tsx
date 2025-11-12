@@ -57,6 +57,36 @@ const departmentColors: Record<string, string> = {
   "Data Science": "bg-purple-100 text-purple-700 border-purple-200",
 };
 
+type QueryItem = {
+  id: string;
+  type: 'skill' | 'operator';
+  value: string;
+  label?: string;
+  icon?: string;
+};
+
+const availableSkills = [
+  { value: "react", label: "React Development", icon: "⚛️" },
+  { value: "python", label: "Python Programming", icon: "🐍" },
+  { value: "cpp", label: "C++", icon: "⚙️" },
+  { value: "java", label: "Java", icon: "☕" },
+  { value: "javascript", label: "JavaScript", icon: "💛" },
+  { value: "typescript", label: "TypeScript", icon: "💙" },
+  { value: "nodejs", label: "Node.js", icon: "🟢" },
+  { value: "angular", label: "Angular", icon: "🅰️" },
+  { value: "sql", label: "SQL Database", icon: "🗄️" },
+  { value: "mongodb", label: "MongoDB", icon: "🍃" },
+  { value: "aws", label: "AWS", icon: "☁️" },
+  { value: "docker", label: "Docker", icon: "🐳" },
+  { value: "kubernetes", label: "Kubernetes", icon: "⚓" },
+  { value: "figma", label: "Figma", icon: "🎨" },
+  { value: "photoshop", label: "Photoshop", icon: "📸" },
+  { value: "ml", label: "Machine Learning", icon: "🤖" },
+  { value: "data-analysis", label: "Data Analysis", icon: "📊" },
+  { value: "ui-ux", label: "UI/UX Design", icon: "🎭" },
+  { value: "project-mgmt", label: "Project Management", icon: "📋" },
+];
+
 export function SkillSearchContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [skillLevel, setSkillLevel] = useState("");
@@ -65,6 +95,10 @@ export function SkillSearchContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedSkill, setSelectedSkill] = useState<typeof sampleData[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Query builder state
+  const [queryItems, setQueryItems] = useState<QueryItem[]>([]);
+  const [selectedSkillToAdd, setSelectedSkillToAdd] = useState("");
 
   const handleViewDetails = (skill: typeof sampleData[0]) => {
     setSelectedSkill(skill);
@@ -74,6 +108,112 @@ export function SkillSearchContent() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedSkill(null);
+  };
+
+  // Add skill to query
+  const handleAddSkill = () => {
+    if (!selectedSkillToAdd) return;
+    
+    const skillInfo = availableSkills.find(s => s.value === selectedSkillToAdd);
+    if (!skillInfo) return;
+
+    const newSkill: QueryItem = {
+      id: `skill-${Date.now()}`,
+      type: 'skill',
+      value: selectedSkillToAdd,
+      label: skillInfo.label,
+      icon: skillInfo.icon,
+    };
+
+    // If there are already skills, add an operator first
+    if (queryItems.length > 0) {
+      const newOperator: QueryItem = {
+        id: `operator-${Date.now()}`,
+        type: 'operator',
+        value: 'and', // default to AND
+      };
+      setQueryItems([...queryItems, newOperator, newSkill]);
+    } else {
+      setQueryItems([newSkill]);
+    }
+
+    setSelectedSkillToAdd("");
+  };
+
+  // Remove item from query
+  const handleRemoveItem = (id: string) => {
+    const index = queryItems.findIndex(item => item.id === id);
+    if (index === -1) return;
+
+    const newItems = [...queryItems];
+    
+    // If removing a skill
+    if (queryItems[index].type === 'skill') {
+      // Remove the skill
+      newItems.splice(index, 1);
+      
+      // Remove operator before it (if exists)
+      if (index > 0 && newItems[index - 1]?.type === 'operator') {
+        newItems.splice(index - 1, 1);
+      }
+      // Or remove operator after it (if exists and it's the first skill)
+      else if (index === 0 && newItems[0]?.type === 'operator') {
+        newItems.splice(0, 1);
+      }
+    }
+    
+    setQueryItems(newItems);
+  };
+
+  // Update operator
+  const handleOperatorChange = (id: string, newValue: string) => {
+    setQueryItems(queryItems.map(item => 
+      item.id === id ? { ...item, value: newValue } : item
+    ));
+  };
+
+  // Clear entire query
+  const handleClearQuery = () => {
+    setQueryItems([]);
+  };
+
+  // Load example query
+  const handleLoadExample = (example: string) => {
+    if (example === 'java-python') {
+      const items: QueryItem[] = [
+        { id: 'skill-1', type: 'skill', value: 'java', label: 'Java', icon: '☕' },
+        { id: 'op-1', type: 'operator', value: 'or' },
+        { id: 'skill-2', type: 'skill', value: 'python', label: 'Python Programming', icon: '🐍' },
+      ];
+      setQueryItems(items);
+    } else if (example === 'react-typescript') {
+      const items: QueryItem[] = [
+        { id: 'skill-1', type: 'skill', value: 'react', label: 'React Development', icon: '⚛️' },
+        { id: 'op-1', type: 'operator', value: 'and' },
+        { id: 'skill-2', type: 'skill', value: 'typescript', label: 'TypeScript', icon: '💙' },
+      ];
+      setQueryItems(items);
+    } else if (example === 'cloud') {
+      const items: QueryItem[] = [
+        { id: 'skill-1', type: 'skill', value: 'aws', label: 'AWS', icon: '☁️' },
+        { id: 'op-1', type: 'operator', value: 'and' },
+        { id: 'skill-2', type: 'skill', value: 'docker', label: 'Docker', icon: '🐳' },
+        { id: 'op-2', type: 'operator', value: 'and' },
+        { id: 'skill-3', type: 'skill', value: 'kubernetes', label: 'Kubernetes', icon: '⚓' },
+      ];
+      setQueryItems(items);
+    }
+  };
+
+  // Generate query string for display
+  const getQueryString = () => {
+    return queryItems.map(item => {
+      if (item.type === 'skill') {
+        return item.label;
+      } else {
+        return item.value.toUpperCase();
+      }
+    }).join(' ');
   };
 
   return (
@@ -97,42 +237,183 @@ export function SkillSearchContent() {
           </p>
         </div>
 
-        {/* Search Bar */}
+        {/* Skills Query Builder */}
         <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff' }}>
-          <CardContent className="py-4">
-            <div className="relative">
-              <Search
-                className="absolute top-1/2 h-4.5 w-4.5 -translate-y-1/2"
-                style={{ color: '#7c3aed', left: '0.65rem' }}
-              />
-              <Input
-                placeholder="Search for a skill..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-10 text-base border-0 bg-gray-50 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-0"
-                style={{ paddingLeft: '2.2rem' }}
-              />
+          <CardContent className="py-6">
+            <div className="space-y-4">
+              {/* Header */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-base font-semibold text-gray-900">Build Your Skills Query</Label>
+                  <p className="text-sm text-gray-500 mt-1">Add skills and combine them with AND/OR logic</p>
+                </div>
+                {queryItems.length > 0 && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-xs"
+                    onClick={handleClearQuery}
+                  >
+                    Clear Query
+                  </Button>
+                )}
+              </div>
+
+              {/* Query Builder Area */}
+              <div className="min-h-[120px] p-5 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border-2 border-dashed border-purple-300">
+                {queryItems.length === 0 ? (
+                  // Empty state
+                  <div className="flex items-center justify-center h-[100px] text-gray-400">
+                    <div className="text-center">
+                      <Sparkles className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm font-medium">No skills added yet</p>
+                      <p className="text-xs mt-1">Select a skill below to start building your query</p>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Dynamic Query Items */}
+                    <div className="flex flex-wrap items-center gap-3">
+                      {queryItems.map((item) => {
+                        if (item.type === 'skill') {
+                          return (
+                            <div 
+                              key={item.id}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border-2 border-purple-300 animate-in fade-in zoom-in duration-200"
+                            >
+                              <span className="text-sm font-semibold text-gray-900">
+                                {item.icon} {item.label}
+                              </span>
+                              <button 
+                                onClick={() => handleRemoveItem(item.id)}
+                                className="hover:bg-red-100 rounded-full p-1 transition-colors"
+                              >
+                                <span className="text-red-600 font-bold text-sm">×</span>
+                              </button>
+                            </div>
+                          );
+                        } else {
+                          // Operator
+                          return (
+                            <select
+                              key={item.id}
+                              value={item.value}
+                              onChange={(e) => handleOperatorChange(item.id, e.target.value)}
+                              className={`px-3 py-1.5 border-2 rounded-lg text-sm font-bold cursor-pointer transition-colors ${
+                                item.value === 'or' 
+                                  ? 'bg-orange-100 text-orange-700 border-orange-300 hover:bg-orange-200'
+                                  : 'bg-green-100 text-green-700 border-green-300 hover:bg-green-200'
+                              }`}
+                            >
+                              <option value="and">AND</option>
+                              <option value="or">OR</option>
+                            </select>
+                          );
+                        }
+                      })}
+                    </div>
+
+                    {/* Current Query Display */}
+                    {queryItems.length > 0 && (
+                      <div className="mt-4 text-xs text-gray-600 bg-white/60 rounded-lg p-3 border border-purple-200">
+                        <strong>Current Query:</strong>{' '}
+                        {queryItems.map((item, index) => {
+                          if (item.type === 'skill') {
+                            return <span key={item.id}>{item.label}</span>;
+                          } else {
+                            return (
+                              <span 
+                                key={item.id}
+                                className={`font-bold mx-1 ${
+                                  item.value === 'or' ? 'text-orange-600' : 'text-green-600'
+                                }`}
+                              >
+                                {item.value.toUpperCase()}
+                              </span>
+                            );
+                          }
+                        })}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* Add Skill Section */}
+              <div className="flex gap-3">
+                <Select value={selectedSkillToAdd} onValueChange={setSelectedSkillToAdd}>
+                  <SelectTrigger className="flex-1 h-11 border-2 border-gray-300 bg-white hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm">
+                    <SelectValue placeholder="Select a skill to add..." />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px] bg-white border-2 border-gray-200 shadow-xl">
+                    {availableSkills.map((skill) => (
+                      <SelectItem 
+                        key={skill.value} 
+                        value={skill.value}
+                        className="hover:bg-purple-100 cursor-pointer"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="text-base">{skill.icon}</span>
+                          <span>{skill.label}</span>
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button 
+                  className="h-11 px-6 shadow-sm hover:opacity-90 transition-all" 
+                  style={{ backgroundColor: '#7c3aed' }}
+                  onClick={handleAddSkill}
+                  disabled={!selectedSkillToAdd}
+                >
+                  + Add Skill
+                </Button>
+              </div>
+
+              {/* Quick Examples */}
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-gray-700">Quick examples:</p>
+                <div className="flex flex-wrap gap-2">
+                  <button 
+                    onClick={() => handleLoadExample('java-python')}
+                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs text-gray-700 transition-colors border border-gray-300"
+                  >
+                    Java OR Python
+                  </button>
+                  <button 
+                    onClick={() => handleLoadExample('react-typescript')}
+                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs text-gray-700 transition-colors border border-gray-300"
+                  >
+                    React AND TypeScript
+                  </button>
+                  <button 
+                    onClick={() => handleLoadExample('cloud')}
+                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs text-gray-700 transition-colors border border-gray-300"
+                  >
+                    AWS AND Docker AND Kubernetes
+                  </button>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Advanced Filters */}
-        <Accordion type="single" collapsible className="bg-white rounded-xl shadow-sm border-0">
-          <AccordionItem value="filters" className="border-none">
-            <AccordionTrigger className="px-6 hover:no-underline">
-              <div className="flex items-center gap-4">
-                <div className="p-1.5 rounded-md" style={{ backgroundColor: '#ef4444' }}>
-                  <Filter className="h-4 w-4 text-white" />
+        {/* Additional Filters - Skill Level & Department */}
+        <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff' }}>
+          <CardContent className="py-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg" style={{ backgroundColor: '#7c3aed' }}>
+                  <Filter className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-base font-medium">Advanced Filters</span>
+                <h3 className="text-lg font-semibold text-gray-900">Additional Filters</h3>
               </div>
-            </AccordionTrigger>
-            <AccordionContent className="px-6 pb-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-3">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Skill Level */}
                 <div className="space-y-3">
-                  <Label htmlFor="skill-level" className="text-sm font-medium">
-                    Skill Level
+                  <Label htmlFor="skill-level" className="text-sm font-semibold text-gray-900">
+                    Minimum Skill Level
                   </Label>
                   <Select value={skillLevel} onValueChange={setSkillLevel}>
                     <SelectTrigger
@@ -152,7 +433,7 @@ export function SkillSearchContent() {
 
                 {/* Department */}
                 <div className="space-y-3">
-                  <Label htmlFor="department" className="text-sm font-medium">
+                  <Label htmlFor="department" className="text-sm font-semibold text-gray-900">
                     Department
                   </Label>
                   <Select value={department} onValueChange={setDepartment}>
@@ -172,54 +453,12 @@ export function SkillSearchContent() {
                     </SelectContent>
                   </Select>
                 </div>
-
-                {/* Logical Operator */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">Filter Logic</Label>
-                  <RadioGroup value={operator} onValueChange={setOperator} className="space-y-3">
-                    <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 shadow-sm transition hover:border-purple-300 data-[state=checked]:border-purple-400" data-state={operator === "and" ? "checked" : undefined}>
-                      <RadioGroupItem
-                        value="and"
-                        id="and"
-                        className="h-5 w-5 border-2 border-purple-400 text-purple-500 focus-visible:ring-2 focus-visible:ring-purple-300"
-                      />
-                      <Label htmlFor="and" className="cursor-pointer flex-1 text-sm font-medium text-gray-700">
-                        AND (Match all filters)
-                      </Label>
-                    </div>
-                    <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 shadow-sm transition hover:border-purple-300 data-[state=checked]:border-purple-400" data-state={operator === "or" ? "checked" : undefined}>
-                      <RadioGroupItem
-                        value="or"
-                        id="or"
-                        className="h-5 w-5 border-2 border-purple-400 text-purple-500 focus-visible:ring-2 focus-visible:ring-purple-300"
-                      />
-                      <Label htmlFor="or" className="cursor-pointer flex-1 text-sm font-medium text-gray-700">
-                        OR (Match any filter)
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
               </div>
+            </div>
+          </CardContent>
+        </Card>
 
-              <div className="flex gap-3 mt-5">
-                <Button className="h-11 rounded-lg px-6 text-[15px] font-semibold text-white shadow" style={{ backgroundColor: '#7c3aed' }}>
-                  Apply Filters
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-11 rounded-lg border-gray-200 px-6 text-[15px] font-semibold text-gray-600 shadow-sm hover:bg-gray-50"
-                  onClick={() => {
-                    setSkillLevel("");
-                    setDepartment("");
-                    setOperator("and");
-                  }}
-                >
-                  Clear All
-                </Button>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+
 
         {/* Results Card */}
         <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff' }}>

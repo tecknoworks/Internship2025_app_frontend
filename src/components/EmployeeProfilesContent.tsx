@@ -3,8 +3,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Button } from "./ui/button";
 import { EmployeeCard } from "./EmployeeCard";
 import { EmployeeDetailsModal } from "./EmployeeDetailsModal";
-import { Users, Upload, RefreshCw, FileSpreadsheet } from "lucide-react";
+import { Users, Upload, RefreshCw, FileSpreadsheet, CheckCircle, XCircle, MessageSquare, Bell } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
+import { Textarea } from "./ui/textarea";
 import {
   Pagination,
   PaginationContent,
@@ -140,9 +156,50 @@ const sampleEmployees = [
   },
 ];
 
+// Mock skill change requests
+const skillChangeRequests = [
+  {
+    id: 1,
+    employeeName: "Sarah Johnson",
+    department: "Engineering",
+    position: "Senior Software Engineer",
+    skillName: "React Development",
+    oldLevel: 4,
+    newLevel: 5,
+    requestDate: "Nov 15, 2024",
+    status: "pending"
+  },
+  {
+    id: 2,
+    employeeName: "Michael Chen",
+    department: "Design",
+    position: "Lead Product Designer",
+    skillName: "Figma",
+    oldLevel: 4,
+    newLevel: 5,
+    requestDate: "Nov 14, 2024",
+    status: "pending"
+  },
+  {
+    id: 3,
+    employeeName: "Emily Rodriguez",
+    department: "Data Science",
+    position: "Data Scientist",
+    skillName: "Python Programming",
+    oldLevel: 4,
+    newLevel: 5,
+    requestDate: "Nov 13, 2024",
+    status: "pending"
+  },
+];
+
 export function EmployeeProfilesContent() {
   const [selectedEmployee, setSelectedEmployee] = useState<typeof sampleEmployees[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRequestsModalOpen, setIsRequestsModalOpen] = useState(false);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<typeof skillChangeRequests[0] | null>(null);
+  const [feedback, setFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -184,6 +241,31 @@ export function EmployeeProfilesContent() {
     });
   };
 
+  const handleAcceptRequest = (requestId: number) => {
+    setIsFeedbackModalOpen(true);
+    const request = skillChangeRequests.find(r => r.id === requestId);
+    setSelectedRequest(request || null);
+  };
+
+  const handleDeclineRequest = (requestId: number) => {
+    setIsFeedbackModalOpen(true);
+    const request = skillChangeRequests.find(r => r.id === requestId);
+    setSelectedRequest(request || null);
+  };
+
+  const handleSubmitFeedback = () => {
+    if (feedback.trim()) {
+      toast.success("Feedback submitted successfully!", {
+        description: "The employee will be notified of your decision.",
+      });
+      setIsFeedbackModalOpen(false);
+      setFeedback("");
+      setSelectedRequest(null);
+    } else {
+      toast.error("Please provide feedback");
+    }
+  };
+
   return (
     <main
       className="flex-1 overflow-y-auto p-8"
@@ -192,17 +274,29 @@ export function EmployeeProfilesContent() {
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Page Title */}
         <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg" style={{ backgroundColor: "#7c3aed" }}>
-              <Users className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg" style={{ backgroundColor: "#7c3aed" }}>
+                <Users className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-semibold" style={{ color: "#1e1b4b" }}>
+                  Employee Skill Profiles
+                </h1>
+                <p className="text-muted-foreground text-lg mt-1">
+                  View and manage employee skills across your organization
+                </p>
+              </div>
             </div>
-            <h1 className="text-4xl font-semibold" style={{ color: "#1e1b4b" }}>
-              Employee Skill Profiles
-            </h1>
+            <Button
+              onClick={() => setIsRequestsModalOpen(true)}
+              style={{ backgroundColor: "#7c3aed" }}
+              className="hover:opacity-90"
+            >
+              <Bell className="h-4 w-4 mr-2" />
+              View Requests ({skillChangeRequests.length})
+            </Button>
           </div>
-          <p className="text-muted-foreground text-lg">
-            View and manage employee skills across your organization
-          </p>
         </div>
 
         {/* Data Management Section */}
@@ -215,17 +309,18 @@ export function EmployeeProfilesContent() {
             <CardDescription>Import and update employee skill data</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-4">
               <input
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 accept=".csv"
-                className="hidden"
+                className="text-sm"
               />
               <Button
                 onClick={handleImportClick}
-                className="bg-[#16a34a] hover:bg-[#15803d] text-white"
+                style={{ backgroundColor: "#16a34a", color: "white" }}
+                className="hover:bg-green-700 whitespace-nowrap"
               >
                 <Upload className="h-4 w-4 mr-2" />
                 Import BambooHR Report
@@ -233,7 +328,7 @@ export function EmployeeProfilesContent() {
               <Button
                 onClick={handleUpdateSkills}
                 variant="outline"
-                className="border-2 hover:bg-purple-50"
+                className="border-2 hover:bg-purple-50 whitespace-nowrap"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Update Skills
@@ -248,7 +343,7 @@ export function EmployeeProfilesContent() {
         {/* Employee Grid */}
         <div>
           <h2 className="text-2xl mb-4">All Employees ({sampleEmployees.length})</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
             {sampleEmployees.map((employee) => (
               <EmployeeCard
                 key={employee.id}
@@ -300,6 +395,137 @@ export function EmployeeProfilesContent() {
           employee={selectedEmployee}
         />
       )}
+
+      {/* Skill Change Requests Modal */}
+      <Dialog open={isRequestsModalOpen} onOpenChange={setIsRequestsModalOpen}>
+        <DialogContent style={{ maxWidth: "95vw", width: "1400px" }} className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-3 mb-2">
+              <Bell className="h-6 w-6" style={{ color: "#7c3aed" }} />
+              Skill Change Requests
+            </DialogTitle>
+            <DialogDescription className="text-base">
+              Review and approve skill level changes requested by employees
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-6" style={{ minHeight: "500px" }}>
+            <div className="rounded-lg border overflow-hidden" style={{ minHeight: "500px" }}>
+              <Table>
+                <TableHeader>
+                  <TableRow style={{ backgroundColor: "#f9fafb" }}>
+                    <TableHead className="font-semibold py-3">Employee</TableHead>
+                    <TableHead className="font-semibold py-3">Department</TableHead>
+                    <TableHead className="font-semibold py-3">Position</TableHead>
+                    <TableHead className="font-semibold py-3">Skill Change</TableHead>
+                    <TableHead className="font-semibold py-3">Date</TableHead>
+                    <TableHead className="text-right font-semibold py-3">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {skillChangeRequests.map((request) => (
+                    <TableRow key={request.id} className="hover:bg-purple-50">
+                      <TableCell className="font-medium py-4">{request.employeeName}</TableCell>
+                      <TableCell className="py-4">
+                        <span className="px-2 py-1 rounded text-xs font-medium" style={{ backgroundColor: "#dbeafe", color: "#1e40af" }}>
+                          {request.department}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-sm py-4">{request.position}</TableCell>
+                      <TableCell className="py-4">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{request.skillName}</span>
+                          <span className="px-2 py-0.5 rounded text-xs font-medium" style={{ backgroundColor: "#fee2e2", color: "#991b1b" }}>
+                            {request.oldLevel}
+                          </span>
+                          <span className="text-gray-400">→</span>
+                          <span className="px-2 py-0.5 rounded text-xs font-medium" style={{ backgroundColor: "#d1fae5", color: "#065f46" }}>
+                            {request.newLevel}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm py-4">{request.requestDate}</TableCell>
+                      <TableCell className="text-right py-4">
+                        <div className="flex items-center gap-2 justify-end">
+                          <Button
+                            size="sm"
+                            onClick={() => handleAcceptRequest(request.id)}
+                            style={{ backgroundColor: "#22c55e" }}
+                            className="hover:opacity-90 text-white"
+                          >
+                            <CheckCircle className="h-4 w-4 mr-1" />
+                            Accept
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleDeclineRequest(request.id)}
+                            variant="outline"
+                            className="border border-red-300 text-red-600 hover:bg-red-50"
+                          >
+                            <XCircle className="h-4 w-4 mr-1" />
+                            Decline
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Feedback Modal */}
+      <Dialog open={isFeedbackModalOpen} onOpenChange={setIsFeedbackModalOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <MessageSquare className="h-6 w-6" style={{ color: "#7c3aed" }} />
+              Provide Feedback
+            </DialogTitle>
+            <DialogDescription>
+              {selectedRequest && (
+                <span>
+                  Feedback for <strong>{selectedRequest.employeeName}</strong> - {selectedRequest.skillName} ({selectedRequest.oldLevel} → {selectedRequest.newLevel})
+                </span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 mt-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Your Feedback</label>
+              <Textarea
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                placeholder="Provide detailed feedback about this skill change request..."
+                className="min-h-[150px]"
+              />
+            </div>
+            
+            <div className="flex justify-end gap-3">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsFeedbackModalOpen(false);
+                  setFeedback("");
+                  setSelectedRequest(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubmitFeedback}
+                style={{ backgroundColor: "#7c3aed" }}
+                className="hover:opacity-90"
+              >
+                Submit Feedback
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
