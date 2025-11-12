@@ -327,7 +327,6 @@
   position: relative;
   display: none;
   width: 50%;
-  min-height: 520px;
   background: linear-gradient(135deg, #6b5fb5 0%, #8577c9 100%);
   padding: 32px;
   color: #ffffff;
@@ -346,7 +345,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left center;
+  object-position: 4% center;
   border-top-left-radius: 28px;
   border-bottom-left-radius: 28px;
 }

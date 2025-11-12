@@ -1,17 +1,28 @@
 import { useState } from "react";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 import loginImg from "../loginImg.png";
 import "../styles/login.css";
 
 export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Placeholder login handler
+    setLoading(true);
+    
+    // Simulare login - TEMPORARY
+    setTimeout(() => {
+      console.log("Login attempt:", { email, password });
+      setLoading(false);
+      // navigate("/");
+    }, 1000);
   };
 
   return (
@@ -41,6 +52,10 @@ export function LoginPage() {
                   type="email"
                   placeholder="Email"
                   className="login-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
+                  required
                 />
               </div>
 
@@ -51,19 +66,24 @@ export function LoginPage() {
                   placeholder="Enter your password"
                   className="login-input"
                   style={{ paddingRight: '3.5rem' }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', padding: '0.5rem', cursor: 'pointer', background: 'transparent', border: 'none', color: 'white' }}
                   aria-label={showPassword ? "Hide password" : "Show password"}
+                  disabled={loading}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>
 
-              <Button type="submit" className="login-primary-button">
-                Log in
+              <Button type="submit" className="login-primary-button" disabled={loading}>
+                {loading ? "Logging in..." : "Log in"}
               </Button>
 
               {/* <div className="login-divider">

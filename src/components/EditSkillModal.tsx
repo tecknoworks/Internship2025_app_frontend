@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Slider } from "./ui/slider";
 import { StarRating } from "./StarRating";
-import { AlertCircle, X } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "./ui/alert";
 
 interface EditSkillModalProps {
@@ -29,10 +29,18 @@ interface EditSkillModalProps {
 
 export function EditSkillModal({ isOpen, onClose, skill, onSave }: EditSkillModalProps) {
   const [skillLevel, setSkillLevel] = useState(skill.level);
+  const [loading, setLoading] = useState(false);
 
   const handleSave = () => {
-    onSave(skill.id, skillLevel);
-    onClose();
+    setLoading(true);
+    
+    // Simulare save - TEMPORARY
+    setTimeout(() => {
+      console.log("Saving skill:", { id: skill.id, level: skillLevel });
+      onSave(skill.id, skillLevel);
+      setLoading(false);
+      onClose();
+    }, 500);
   };
 
   const handleCancel = () => {
@@ -114,14 +122,16 @@ export function EditSkillModal({ isOpen, onClose, skill, onSave }: EditSkillModa
             variant="outline"
             onClick={handleCancel}
             className="border-2"
+            disabled={loading}
           >
             Cancel
           </Button>
           <Button
             onClick={handleSave}
+            disabled={loading}
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
           >
-            Save Changes
+            {loading ? 'Saving...' : 'Save Changes'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 import loginImg from "../loginImg.png";
 import "../styles/login.css";
 
@@ -12,10 +12,34 @@ export function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleRegister = (event: React.FormEvent) => {
+  const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Placeholder register handler
+    
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    if (!agreeToTerms) {
+      alert("Please agree to Terms & Conditions");
+      return;
+    }
+
+    setLoading(true);
+    
+    // Simulare register - TEMPORARY
+    setTimeout(() => {
+      console.log("Register attempt:", { name, email, password });
+      setLoading(false);
+      // navigate("/");
+    }, 1000);
   };
 
   return (
@@ -39,12 +63,17 @@ export function RegisterPage() {
             </div>
 
             <form onSubmit={handleRegister} className="register-form__body">
+             
               <div className="register-field">
                 <Input
                   id="email"
                   type="email"
                   placeholder="Email"
                   className="register-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
+                  required
                 />
               </div>
 
@@ -55,12 +84,17 @@ export function RegisterPage() {
                   placeholder="Enter your password"
                   className="register-input"
                   style={{ paddingRight: '3.5rem' }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', padding: '0.5rem', cursor: 'pointer', background: 'transparent', border: 'none', color: 'white' }}
                   aria-label={showPassword ? "Hide password" : "Show password"}
+                  disabled={loading}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -73,6 +107,10 @@ export function RegisterPage() {
                   placeholder="Confirm your password"
                   className="register-input"
                   style={{ paddingRight: '3.5rem' }}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={loading}
+                  required
                 />
                 <button
                   type="button"
@@ -81,6 +119,7 @@ export function RegisterPage() {
                   aria-label={
                     showConfirmPassword ? "Hide password confirmation" : "Show password confirmation"
                   }
+                  disabled={loading}
                 >
                   {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -94,14 +133,15 @@ export function RegisterPage() {
                     setAgreeToTerms(checked === true)
                   }
                   className="register-checkbox"
+                  disabled={loading}
                 />
                 <Label htmlFor="terms">
                   I agree to the <a href="#">Terms & Conditions</a>
                 </Label>
               </div>
 
-              <Button type="submit" className="register-primary-button">
-                Register
+              <Button type="submit" className="register-primary-button" disabled={loading}>
+                {loading ? "Registering..." : "Register"}
               </Button>
 
               {/* <div className="register-divider">
