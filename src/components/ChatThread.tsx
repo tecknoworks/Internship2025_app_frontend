@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Bot, User } from "lucide-react";
-import { ScrollArea } from "./ui/scroll-area";
 
 interface Message {
   id: number;
@@ -15,7 +14,7 @@ interface ChatThreadProps {
 
 export function ChatThread({ messages }: ChatThreadProps) {
   return (
-    <ScrollArea className="flex-1 px-6 py-4">
+    <div className="flex-1 overflow-y-auto px-6 py-4">
       <div className="max-w-4xl mx-auto space-y-6">
         {messages.map((message) => (
           <div
@@ -64,6 +63,6 @@ export function ChatThread({ messages }: ChatThreadProps) {
           </div>
         ))}
       </div>
-    </ScrollArea>
+    </div>
   );
 }

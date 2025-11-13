@@ -175,6 +175,8 @@ export function SkillSearchContent() {
   // Clear entire query
   const handleClearQuery = () => {
     setQueryItems([]);
+              setSelectedSkillToAdd("");
+
   };
 
   // Load example query
@@ -217,35 +219,32 @@ export function SkillSearchContent() {
   };
 
   return (
-    <main className="flex-1 overflow-y-auto p-8" style={{ backgroundColor: '#f8f9fc' }}>
+    <main className="flex-1 overflow-y-auto p-8" style={{ backgroundColor: '#f8f9fc', fontFamily: '"Saira", sans-serif' }}>
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Page Title */}
         <div className="space-y-3">
           <div className="flex items-center gap-4">
             <div
               className="p-3 rounded-xl shadow-md"
-              style={{ backgroundColor: "#7c3aed" }}
+              style={{ backgroundColor: "#EA2775" }}
             >
               <Sparkles className="h-7 w-7 text-white" />
             </div>
-            <h1 className="text-4xl font-bold" style={{ color: '#1e1b4b' }}>
-              Skill Search & Discovery
-            </h1>
-          </div>
-          <p className="text-lg ml-1" style={{ color: '#64748b' }}>
+          <p className="text-lg ml-1" style={{ color: '#64748b', fontFamily: '"Saira", sans-serif' }}>
             Find and explore skills across your organization
           </p>
+          </div>
+
         </div>
 
         {/* Skills Query Builder */}
-        <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff' }}>
-          <CardContent className="py-6">
+        <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff', marginTop: '24px' }}>
+          <CardContent className="py-5 px-6">
             <div className="space-y-4">
               {/* Header */}
               <div className="flex items-center justify-between">
                 <div>
-                  <Label className="text-base font-semibold text-gray-900">Build Your Skills Query</Label>
-                  <p className="text-sm text-gray-500 mt-1">Add skills and combine them with AND/OR logic</p>
+                  <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: '"Saira", sans-serif' }}>Add skills and combine them with AND/OR logic</p>
                 </div>
                 {queryItems.length > 0 && (
                   <Button 
@@ -253,6 +252,7 @@ export function SkillSearchContent() {
                     size="sm" 
                     className="text-xs"
                     onClick={handleClearQuery}
+                    style={{ fontFamily: '"Saira", sans-serif' }}
                   >
                     Clear Query
                   </Button>
@@ -260,33 +260,33 @@ export function SkillSearchContent() {
               </div>
 
               {/* Query Builder Area */}
-              <div className="min-h-[120px] p-5 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border-2 border-dashed border-purple-300">
+              <div className="min-h-[100px] p-4 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border-2 border-dashed border-purple-300">
                 {queryItems.length === 0 ? (
                   // Empty state
-                  <div className="flex items-center justify-center h-[100px] text-gray-400">
+                  <div className="flex items-center justify-center h-[80px] text-gray-400">
                     <div className="text-center">
                       <Sparkles className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm font-medium">No skills added yet</p>
-                      <p className="text-xs mt-1">Select a skill below to start building your query</p>
+                      <p className="text-sm font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>No skills added yet</p>
+                      <p className="text-xs mt-1" style={{ fontFamily: '"Saira", sans-serif' }}>Select a skill below to start building your query</p>
                     </div>
                   </div>
                 ) : (
                   <>
                     {/* Dynamic Query Items */}
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2">
                       {queryItems.map((item) => {
                         if (item.type === 'skill') {
                           return (
                             <div 
                               key={item.id}
-                              className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border-2 border-purple-300 animate-in fade-in zoom-in duration-200"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg shadow-sm border-2 border-purple-300 animate-in fade-in zoom-in duration-200"
                             >
-                              <span className="text-sm font-semibold text-gray-900">
+                              <span className="text-xs font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>
                                 {item.icon} {item.label}
                               </span>
                               <button 
                                 onClick={() => handleRemoveItem(item.id)}
-                                className="hover:bg-red-100 rounded-full p-1 transition-colors"
+                                className="hover:bg-red-100 rounded-full p-0.5 transition-colors"
                               >
                                 <span className="text-red-600 font-bold text-sm">×</span>
                               </button>
@@ -299,7 +299,7 @@ export function SkillSearchContent() {
                               key={item.id}
                               value={item.value}
                               onChange={(e) => handleOperatorChange(item.id, e.target.value)}
-                              className={`px-3 py-1.5 border-2 rounded-lg text-sm font-bold cursor-pointer transition-colors ${
+                              className={`px-2 py-1 border-2 rounded-lg text-xs font-bold cursor-pointer transition-colors ${
                                 item.value === 'or' 
                                   ? 'bg-orange-100 text-orange-700 border-orange-300 hover:bg-orange-200'
                                   : 'bg-green-100 text-green-700 border-green-300 hover:bg-green-200'
@@ -340,29 +340,52 @@ export function SkillSearchContent() {
               </div>
 
               {/* Add Skill Section */}
-              <div className="flex gap-3">
+              <div className="flex gap-3 items-center" style={{ marginTop: '20px' }}>
                 <Select value={selectedSkillToAdd} onValueChange={setSelectedSkillToAdd}>
-                  <SelectTrigger className="flex-1 h-11 border-2 border-gray-300 bg-white hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm">
-                    <SelectValue placeholder="Select a skill to add..." />
+                  <SelectTrigger 
+                    className="border-2 bg-white hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm" 
+                    style={{ 
+                      height: '48px', 
+                      width: '350px', 
+                      fontSize: '16px',
+                      color: '#1f2937',
+                      borderColor: '#d1d5db',
+                      fontWeight: '400',
+                      padding: '0 16px'
+                    }}
+                  >
+                    <SelectValue placeholder="Select a skill" />
                   </SelectTrigger>
-                  <SelectContent className="max-h-[300px] bg-white border-2 border-gray-200 shadow-xl">
+                  <SelectContent 
+                    className="bg-white border-2 shadow-xl" 
+                    style={{ 
+                      maxHeight: '350px',
+                      borderColor: '#e5e7eb',
+                      borderRadius: '8px'
+                    }}
+                  >
                     {availableSkills.map((skill) => (
                       <SelectItem 
                         key={skill.value} 
                         value={skill.value}
-                        className="hover:bg-purple-100 cursor-pointer"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
                       >
-                        <span className="flex items-center gap-2">
-                          <span className="text-base">{skill.icon}</span>
-                          <span>{skill.label}</span>
+                        <span className="flex items-center gap-3">
+                          <span style={{ fontSize: '16px' }}>{skill.icon}</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500' }}>{skill.label}</span>
                         </span>
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
                 <Button 
-                  className="h-11 px-6 shadow-sm hover:opacity-90 transition-all" 
-                  style={{ backgroundColor: '#7c3aed' }}
+                  className="px-5 shadow-sm hover:opacity-90 transition-all text-sm font-semibold" 
+                  style={{ backgroundColor: '#7c3aed', height: '36px', marginLeft: '16px' }}
                   onClick={handleAddSkill}
                   disabled={!selectedSkillToAdd}
                 >
@@ -370,86 +393,235 @@ export function SkillSearchContent() {
                 </Button>
               </div>
 
-              {/* Quick Examples */}
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-gray-700">Quick examples:</p>
-                <div className="flex flex-wrap gap-2">
-                  <button 
-                    onClick={() => handleLoadExample('java-python')}
-                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs text-gray-700 transition-colors border border-gray-300"
-                  >
-                    Java OR Python
-                  </button>
-                  <button 
-                    onClick={() => handleLoadExample('react-typescript')}
-                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs text-gray-700 transition-colors border border-gray-300"
-                  >
-                    React AND TypeScript
-                  </button>
-                  <button 
-                    onClick={() => handleLoadExample('cloud')}
-                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs text-gray-700 transition-colors border border-gray-300"
-                  >
-                    AWS AND Docker AND Kubernetes
-                  </button>
-                </div>
-              </div>
+
             </div>
           </CardContent>
         </Card>
 
         {/* Additional Filters - Skill Level & Department */}
-        <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff' }}>
+        <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff', marginTop: '24px' }}>
           <CardContent className="py-6">
             <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg" style={{ backgroundColor: '#7c3aed' }}>
+              <div className="flex items-center gap-3" style={{ marginBottom: '8px' }}>
+                <div className="p-2 rounded-lg" style={{ backgroundColor: '#EA2775' ,marginRight: '8px' ,marginTop: '5px' }}>
                   <Filter className="h-5 w-5 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Additional Filters</h3>
+                <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>Additional Filters</h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ marginTop: '16px' }}>
                 {/* Skill Level */}
-                <div className="space-y-3">
-                  <Label htmlFor="skill-level" className="text-sm font-semibold text-gray-900">
+                <div className="space-y-3"> 
+                  <Label htmlFor="skill-level" className="text-sm font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>
                     Minimum Skill Level
                   </Label>
                   <Select value={skillLevel} onValueChange={setSkillLevel}>
                     <SelectTrigger
                       id="skill-level"
-                      className="h-12 rounded-lg border-gray-200 bg-gray-50 text-sm font-medium text-gray-700 shadow-sm transition focus-visible:border-purple-400 focus-visible:ring-2 focus-visible:ring-purple-400/40"
+                      className="border-2 bg-white hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm"
+                      style={{ 
+                        height: '48px', 
+                        width: '100%', 
+                        fontSize: '16px',
+                        color: '#1f2937',
+                        borderColor: '#d1d5db',
+                        fontWeight: '400',
+                        padding: '0 16px'
+                      }}
                     >
                       <SelectValue placeholder="Select level" />
                     </SelectTrigger>
-                    <SelectContent className="z-50 rounded-lg border border-gray-200 bg-white shadow-xl">
-                      <SelectItem value="beginner">⭐ Beginner</SelectItem>
-                      <SelectItem value="intermediate">⭐⭐ Intermediate</SelectItem>
-                      <SelectItem value="advanced">⭐⭐⭐ Advanced</SelectItem>
-                      <SelectItem value="expert">⭐⭐⭐⭐⭐ Expert</SelectItem>
+                    <SelectContent 
+                      className="bg-white border-2 shadow-xl" 
+                      style={{ 
+                        maxHeight: '350px',
+                        borderColor: '#e5e7eb',
+                        borderRadius: '8px'
+                      }}
+                    >
+                      <SelectItem 
+                        value="any"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        Any
+                      </SelectItem>
+                      <SelectItem 
+                        value="beginner"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        ⭐
+                      </SelectItem>
+                      <SelectItem 
+                        value="intermediate"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        ⭐⭐
+                      </SelectItem>
+                      <SelectItem 
+                        value="intermediate-plus"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        ⭐⭐⭐
+                      </SelectItem>
+                      <SelectItem 
+                        value="advanced"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        ⭐⭐⭐⭐
+                      </SelectItem>
+                      <SelectItem 
+                        value="expert"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        ⭐⭐⭐⭐⭐
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 {/* Department */}
                 <div className="space-y-3">
-                  <Label htmlFor="department" className="text-sm font-semibold text-gray-900">
+                  <Label htmlFor="department" className="text-sm font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>
                     Department
                   </Label>
                   <Select value={department} onValueChange={setDepartment}>
                     <SelectTrigger
                       id="department"
-                      className="h-12 rounded-lg border-gray-200 bg-gray-50 text-sm font-medium text-gray-700 shadow-sm transition focus-visible:border-purple-400 focus-visible:ring-2 focus-visible:ring-purple-400/40"
+                      className="border-2 bg-white hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm"
+                      style={{ 
+                        height: '48px', 
+                        width: '100%', 
+                        fontSize: '16px',
+                        color: '#1f2937',
+                        borderColor: '#d1d5db',
+                        fontWeight: '400',
+                        padding: '0 16px'
+                      }}
                     >
                       <SelectValue placeholder="Select department" />
                     </SelectTrigger>
-                    <SelectContent className="z-50 rounded-lg border border-gray-200 bg-white shadow-xl">
-                      <SelectItem value="engineering">💻 Engineering</SelectItem>
-                      <SelectItem value="design">🎨 Design</SelectItem>
-                      <SelectItem value="marketing">📢 Marketing</SelectItem>
-                      <SelectItem value="analytics">📊 Analytics</SelectItem>
-                      <SelectItem value="operations">⚙️ Operations</SelectItem>
-                      <SelectItem value="data-science">🤖 Data Science</SelectItem>
+                    <SelectContent 
+                      className="bg-white border-2 shadow-xl" 
+                      style={{ 
+                        maxHeight: '350px',
+                        borderColor: '#e5e7eb',
+                        borderRadius: '8px'
+                      }}
+                    >
+                      <SelectItem 
+                        value="engineering"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span style={{ fontSize: '16px' }}>💻</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500' }}>Engineering</span>
+                        </span>
+                      </SelectItem>
+                      <SelectItem 
+                        value="design"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span style={{ fontSize: '16px' }}>🎨</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500' }}>Design</span>
+                        </span>
+                      </SelectItem>
+                      <SelectItem 
+                        value="marketing"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span style={{ fontSize: '16px' }}>📢</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500' }}>Marketing</span>
+                        </span>
+                      </SelectItem>
+                      <SelectItem 
+                        value="analytics"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span style={{ fontSize: '16px' }}>📊</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500' }}>Analytics</span>
+                        </span>
+                      </SelectItem>
+                      <SelectItem 
+                        value="operations"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span style={{ fontSize: '16px' }}>⚙️</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500' }}>Operations</span>
+                        </span>
+                      </SelectItem>
+                      <SelectItem 
+                        value="data-science"
+                        className="cursor-pointer hover:bg-blue-50"
+                        style={{ 
+                          fontSize: '15px',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span style={{ fontSize: '16px' }}>🤖</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500' }}>Data Science</span>
+                        </span>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -458,13 +630,39 @@ export function SkillSearchContent() {
           </CardContent>
         </Card>
 
-
+        {/* Action Buttons */}
+        <div className="flex gap-4 justify-center" style={{ marginTop: '32px' }}>
+          <Button 
+            className="h-12 px-8 shadow-md hover:opacity-90 transition-all font-semibold text-base"
+            style={{ backgroundColor: '#7c3aed', fontFamily: '"Saira", sans-serif' }}
+            onClick={() => {
+              // TODO: Apply filters logic
+              console.log('Applying filters:', { queryItems, skillLevel, department });
+            }}
+          >
+            <Search className="h-5 w-5 mr-2" />
+            Search
+          </Button>
+          <Button 
+            variant="outline"
+            className="h-12 px-8 shadow-sm hover:bg-gray-100 transition-all font-semibold text-base border-2"
+            style={{ fontFamily: '"Saira", sans-serif' }}
+            onClick={() => {
+              setQueryItems([]);
+              setSkillLevel("");
+              setDepartment("");
+              setSelectedSkillToAdd("");
+            }}
+          >
+            Reset Filters
+          </Button>
+        </div>
 
         {/* Results Card */}
-        <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff' }}>
+        <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff', marginTop: '32px' }}>
           <CardHeader className="border-b" style={{ backgroundColor: '#fafbfc' }}>
-            <CardTitle className="text-xl font-semibold">Search Results</CardTitle>
-            <CardDescription className="text-sm">
+            <CardTitle className="text-xl font-semibold" style={{ fontFamily: '"Saira", sans-serif' }}>Search Results</CardTitle>
+            <CardDescription className="text-sm" style={{ fontFamily: '"Saira", sans-serif' }}>
               Showing {sampleData.length} skills matching your criteria
             </CardDescription>
           </CardHeader>
@@ -474,16 +672,16 @@ export function SkillSearchContent() {
               <Table>
                 <TableHeader>
                   <TableRow style={{ backgroundColor: '#f3f4f6' }} className="hover:bg-gray-100">
-                    <TableHead className="font-semibold text-gray-700">Skill Name</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Rating</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Department</TableHead>
-                    <TableHead className="text-right font-semibold text-gray-700">Actions</TableHead>
+                    <TableHead className="font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Skill Name</TableHead>
+                    <TableHead className="font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Rating</TableHead>
+                    <TableHead className="font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Department</TableHead>
+                    <TableHead className="text-right font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sampleData.map((skill) => (
                     <TableRow key={skill.id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">
+                      <TableCell className="font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>
                         {skill.skillName}
                       </TableCell>
                       <TableCell>
@@ -493,6 +691,7 @@ export function SkillSearchContent() {
                         <span 
                           className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border"
                           style={{
+                            fontFamily: '"Saira", sans-serif',
                             backgroundColor: skill.department === 'Engineering' ? '#ede9fe' :
                                            skill.department === 'Analytics' ? '#fce7f3' :
                                            skill.department === 'Design' ? '#ffe4e6' :
@@ -521,7 +720,7 @@ export function SkillSearchContent() {
                           variant="link" 
                           size="sm"
                           className="text-sm"
-                          style={{ color: '#1e1b4b' }}
+                          style={{ color: '#1e1b4b', fontFamily: '"Saira", sans-serif' }}
                           onClick={() => handleViewDetails(skill)}
                         >
                           View Details

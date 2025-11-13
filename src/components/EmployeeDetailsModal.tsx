@@ -72,7 +72,7 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-h-[90vh] p-0 gap-0 overflow-hidden" style={{ maxWidth: '1000px', width: '95vw' }}>
         {/* Close button */}
         <button
           onClick={onClose}
@@ -120,7 +120,7 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
                 </div>
 
                 {/* Contact Information */}
-                <div
+                {/* <div
                   className="space-y-3 rounded-lg border-2 p-4"
                   style={{ backgroundColor: "#f0eeff" }}
                 >
@@ -140,7 +140,7 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span>Joined {employee.joinedDate || "N/A"}</span>
                   </div>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
 
@@ -153,36 +153,38 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
                 </CardHeader>
                 <CardContent className="pt-6">
                   <div className="rounded-lg border overflow-hidden">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-gray-50 hover:bg-gray-50">
-                          <TableHead>Skill Name</TableHead>
-                          <TableHead>Level</TableHead>
-                          <TableHead>Category</TableHead>
-                          <TableHead>Last Updated</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {employee.skills.map((skill) => (
-                          <TableRow key={skill.id} className="hover:bg-gray-50">
-                            <TableCell>{skill.name}</TableCell>
-                            <TableCell>
-                              <StarRating initialRating={skill.level} readonly />
-                            </TableCell>
-                            <TableCell>
-                              <Badge
-                                className={`${categoryColors[skill.category] || 'bg-gray-100 text-gray-700'} border`}
-                              >
-                                {skill.category}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-sm text-muted-foreground">
-                              {skill.lastUpdated}
-                            </TableCell>
+                    <div className="max-h-[400px] overflow-y-auto">
+                      <Table>
+                        <TableHeader className="sticky top-0 bg-gray-50 z-10">
+                          <TableRow className="hover:bg-gray-50">
+                            <TableHead>Skill name<nav></nav></TableHead>
+                            <TableHead>Level</TableHead>
+                            <TableHead>Category</TableHead>
+                            <TableHead>Hire date</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {employee.skills.map((skill) => (
+                            <TableRow key={skill.id} className="hover:bg-gray-50">
+                              <TableCell>{skill.name}</TableCell>
+                              <TableCell>
+                                <StarRating initialRating={skill.level} readonly />
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  className={`${categoryColors[skill.category] || 'bg-gray-100 text-gray-700'} border`}
+                                >
+                                  {skill.category}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-sm text-muted-foreground">
+                                {skill.lastUpdated}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

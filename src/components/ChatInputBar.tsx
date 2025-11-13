@@ -25,7 +25,7 @@ export function ChatInputBar({ onSendMessage }: ChatInputBarProps) {
   };
 
   return (
-    <div className="border-t-2 bg-white p-4">
+    <div className="flex-shrink-0 border-t-2 bg-white p-4 shadow-lg">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-end gap-2">
           <Button

@@ -79,7 +79,7 @@ export function AIChatContent({ selectedChatId, messages, onSendMessage, onSugge
 
   // Show chat thread if a chat is selected
   return (
-    <main className="flex-1 flex flex-col" style={{ backgroundColor: '#faf5ff' }}>
+    <main className="flex-1 flex flex-col overflow-hidden" style={{ backgroundColor: '#faf5ff' }}>
       <ChatThread messages={messages} />
       <ChatInputBar onSendMessage={onSendMessage} />
     </main>
