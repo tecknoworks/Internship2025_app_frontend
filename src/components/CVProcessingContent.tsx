@@ -198,8 +198,8 @@ export function CVProcessingContent() {
   ];
 
   return (
-    <main
-      className="flex-1 overflow-y-auto p-8"
+    <div
+      className="h-full overflow-y-auto p-8"
       style={{ backgroundColor: "#f6f5ff" }}
     >
       <div className="max-w-5xl mx-auto space-y-6">
@@ -459,6 +459,6 @@ export function CVProcessingContent() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </div>
   );
 }

@@ -267,10 +267,7 @@ export function EmployeeProfilesContent() {
   };
 
   return (
-    <main
-      className="flex-1 overflow-y-auto p-8"
-      style={{ backgroundColor: "#f6f5ff" }}
-    >
+    <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: "#f6f5ff" }}>
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Page Title */}
         <div className="space-y-2">
@@ -526,6 +523,6 @@ export function EmployeeProfilesContent() {
           </div>
         </DialogContent>
       </Dialog>
-    </main>
+    </div>
   );
 }

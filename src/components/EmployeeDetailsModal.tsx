@@ -72,7 +72,7 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] p-0 gap-0 overflow-hidden" style={{ maxWidth: '1000px', width: '95vw' }}>
+      <DialogContent className="sm:m-w-[1300px] max-h-[90vh] p-0 gap-0 overflow-hidden">
         {/* Close button */}
         <button
           onClick={onClose}

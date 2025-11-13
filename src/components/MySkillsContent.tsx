@@ -142,7 +142,7 @@ export function MySkillsContent() {
   ];
 
   return (
-    <main className="flex-1 overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f7' }}>
+    <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f7' }}>
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Page Title */}
         <div className="space-y-2">
@@ -383,6 +383,6 @@ export function MySkillsContent() {
           </div>
         </DialogContent>
       </Dialog>
-    </main>
+    </div>
   );
 }

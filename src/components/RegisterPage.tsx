@@ -63,7 +63,7 @@ export function RegisterPage() {
             </div>
 
             <form onSubmit={handleRegister} className="register-form__body">
-             
+              
               <div className="register-field">
                 <Input
                   id="email"

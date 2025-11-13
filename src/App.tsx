@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, useNavigate, useLocation } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner";
 import { Header } from "./components/Header";
 import { AIChatPage } from "./pages/AIChatPage";
@@ -8,6 +8,7 @@ import { SkillSearchPage } from "./pages/SkillSearchPage";
 import { EmployeeProfilesPage } from "./pages/EmployeeProfilesPage";
 import { LoginPage } from "./components/LoginPage";
 import { RegisterPage } from "./components/RegisterPage";
+import { Sidebar } from "./components/Sidebar";
 
 type Page = "ai-chat" | "my-skills" | "cv-processing" | "skill-search" | "employee-profiles";
 
@@ -49,8 +50,8 @@ function AppContent() {
     location.pathname === '/employee-profiles' ? 'employee-profiles' :
     'ai-chat';
 
-  const handlePageChange = (page: string) => {
-    if (page === 'ai-chat') {
+  const handlePageChange = (page: Page) => {
+    if (page === "ai-chat") {
       navigate('/');
     } else {
       navigate(`/${page}`);
@@ -73,13 +74,17 @@ function AppContent() {
   };
 
   return (
-    <div className="h-screen flex flex-col">
-      <Header 
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
-      {renderContent()}
+    <>
+      <div className="flex h-screen bg-slate-50 overflow-hidden">
+        <Sidebar currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <Header currentPage={currentPage} />
+          <main className="flex-1 overflow-y-auto">
+            {renderContent()}
+          </main>
+        </div>
+      </div>
       <Toaster position="top-right" />
-    </div>
+    </>
   );
 }

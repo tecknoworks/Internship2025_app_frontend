@@ -219,8 +219,8 @@ export function SkillSearchContent() {
   };
 
   return (
-    <main className="flex-1 overflow-y-auto p-8" style={{ backgroundColor: '#f8f9fc', fontFamily: '"Saira", sans-serif' }}>
-      <div className="max-w-5xl mx-auto space-y-6">
+    <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f5', fontFamily: '"Saira", sans-serif' }}>
+      <div className="space-y-6" style={{ maxWidth: '1400px' }}>
         {/* Page Title */}
         <div className="space-y-3">
           <div className="flex items-center gap-4">
@@ -421,7 +421,7 @@ export function SkillSearchContent() {
                       className="border-2 bg-white hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm"
                       style={{ 
                         height: '48px', 
-                        width: '100%', 
+                        width: '350px', 
                         fontSize: '16px',
                         color: '#1f2937',
                         borderColor: '#d1d5db',
@@ -520,7 +520,7 @@ export function SkillSearchContent() {
                       className="border-2 bg-white hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm"
                       style={{ 
                         height: '48px', 
-                        width: '100%', 
+                        width: '350px', 
                         fontSize: '16px',
                         color: '#1f2937',
                         borderColor: '#d1d5db',
@@ -631,7 +631,7 @@ export function SkillSearchContent() {
         </Card>
 
         {/* Action Buttons */}
-        <div className="flex gap-4 justify-center" style={{ marginTop: '32px' }}>
+        <div className="flex gap-4 justify-start" style={{ marginTop: '32px' }}>
           <Button 
             className="h-12 px-8 shadow-md hover:opacity-90 transition-all font-semibold text-base"
             style={{ backgroundColor: '#7c3aed', fontFamily: '"Saira", sans-serif' }}
@@ -645,7 +645,7 @@ export function SkillSearchContent() {
           </Button>
           <Button 
             variant="outline"
-            className="h-12 px-8 shadow-sm hover:bg-gray-100 transition-all font-semibold text-base border-2"
+            className="h-12 px-10 shadow-sm hover:bg-gray-100 transition-all font-semibold text-base border-2"
             style={{ fontFamily: '"Saira", sans-serif' }}
             onClick={() => {
               setQueryItems([]);
@@ -806,6 +806,6 @@ export function SkillSearchContent() {
           skill={selectedSkill}
         />
       )}
-    </main>
+    </div>
   );
 }
