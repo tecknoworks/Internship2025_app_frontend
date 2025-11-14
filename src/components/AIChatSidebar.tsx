@@ -33,7 +33,7 @@ interface AIChatSidebarProps {
 
 export function AIChatSidebar({ selectedChatId, onSelectChat, onNewChat }: AIChatSidebarProps) {
   return (
-    <aside className="w-64 border-r-2 bg-white p-4 flex flex-col h-full">
+    <aside className="w-64 border-r-2 bg-white p-4 flex flex-col h-screen">
       <Button 
         onClick={onNewChat}
         className="w-full mb-6"

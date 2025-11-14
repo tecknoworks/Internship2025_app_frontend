@@ -143,7 +143,7 @@ export function MySkillsContent() {
 
   return (
     <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f7' }}>
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="space-y-6" style={{ maxWidth: '1400px' }}>
         {/* Page Title */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">

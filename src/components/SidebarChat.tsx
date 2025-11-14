@@ -27,7 +27,7 @@ const recentChats = [
 
 export function Sidebar() {
   return (
-    <aside className="w-64 border-r bg-background p-4 flex flex-col h-full">
+    <aside className="w-64 border-r bg-background -">
       <Button className="w-full mb-6">
         <Plus className="mr-2 h-4 w-4" />
         New Chat

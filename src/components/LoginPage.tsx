@@ -21,7 +21,8 @@ export function LoginPage() {
     setTimeout(() => {
       console.log("Login attempt:", { email, password });
       setLoading(false);
-      // navigate("/");
+      // Redirect to AI Chat page
+      navigate("/");
     }, 1000);
   };
 

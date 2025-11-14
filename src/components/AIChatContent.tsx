@@ -40,8 +40,8 @@ export function AIChatContent({ selectedChatId, messages, onSendMessage, onSugge
   // Show welcome screen if no chat is selected
   if (!selectedChatId) {
     return (
-      <main className="flex-1 overflow-y-auto p-8" style={{ backgroundColor: '#faf5ff' }}>
-        <div className="max-w-5xl mx-auto">
+      <main className="flex-1 overflow-hidden flex items-center justify-center p-8" style={{ backgroundColor: '#faf5ff' }}>
+        <div className="max-w-5xl w-full">
           <div className="text-center mb-12">
             <h1 className="text-6xl mb-4" style={{ color: '#581c87' }}>
               Welcome, John Doe

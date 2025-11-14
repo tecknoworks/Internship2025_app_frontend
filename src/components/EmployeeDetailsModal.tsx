@@ -72,47 +72,119 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:m-w-[1300px] max-h-[90vh] p-0 gap-0 overflow-hidden">
+      <DialogContent 
+        className="p-0 gap-0 overflow-hidden"
+        style={{
+          width: '85vw',
+          maxWidth: '1600px',
+          maxHeight: '90vh'
+        }}
+      >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-10"
+          style={{
+            position: 'absolute',
+            right: '16px',
+            top: '16px',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            zIndex: 10,
+            padding: '4px',
+            borderRadius: '4px'
+          }}
         >
-          <X className="h-4 w-4 text-white" />
-          <span className="sr-only">Close</span>
+          <X style={{ width: '18px', height: '18px', color: 'white' }} />
         </button>
 
-  <div className="p-6 pb-16" style={{ backgroundColor: "#7c3aed" }}>
+        <div style={{ 
+          padding: '15px 20px', 
+          paddingBottom: '20px', 
+          backgroundColor: "#7c3aed" 
+        }}>
           <DialogHeader>
-            <DialogTitle className="text-white text-2xl">Employee Profile</DialogTitle>
-            <DialogDescription className="text-white/90">
+            <DialogTitle style={{ color: 'white', fontSize: '24px', fontWeight: 'bold' }}>
+              Employee Profile
+            </DialogTitle>
+            <DialogDescription style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '14px' }}>
               Complete skill profile and information
             </DialogDescription>
           </DialogHeader>
         </div>
 
         {/* Scrollable content */}
-        <div className="overflow-y-auto max-h-[calc(90vh-200px)]">
+        <div style={{ 
+          overflowY: 'auto', 
+          maxHeight: 'calc(90vh - 170px)' 
+        }}>
           {/* User Card - overlapping the header */}
-          <div className="px-6 -mt-12 pb-6">
-            <Card className="border-2 shadow-lg">
-              <CardContent className="pt-6">
+          <div style={{ 
+            padding: '0 32px', 
+            marginTop: '20px',
+            paddingBottom: '24px' 
+          }}>
+            <Card style={{ 
+              border: '2px solid #e5e7eb', 
+              borderRadius: '10px',
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+            }}>
+              <CardContent style={{ paddingTop: '24px', padding: '24px' }}>
                 {/* Avatar and Basic Info */}
-                <div className="flex items-start gap-4 mb-6">
-                  <Avatar className="h-20 w-20 border-4 border-white shadow-md">
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-start', 
+                  gap: '20px', 
+                  marginBottom: '20px' 
+                }}>
+                  <Avatar style={{ 
+                    height: '80px', 
+                    width: '80px', 
+                    border: '3px solid white',
+                    borderRadius: '50%',
+                    boxShadow: '0 2px 4px rgb(0 0 0 / 0.1)',
+                    flexShrink: 0
+                  }}>
                     <AvatarImage src={employee.avatar} alt={employee.name} />
                     <AvatarFallback
-                      className="text-xl text-white"
-                      style={{ backgroundColor: "#7c3aed" }}
+                      style={{ 
+                        backgroundColor: "#7c3aed",
+                        color: 'white',
+                        fontSize: '28px',
+                        fontWeight: 'bold'
+                      }}
                     >
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1">
-                    <h3 className="text-2xl mb-1">{employee.name}</h3>
-                    <p className="text-muted-foreground mb-2">{employee.position || "Professional"}</p>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3 style={{ 
+                      fontSize: '22px', 
+                      fontWeight: 'bold', 
+                      marginBottom: '6px',
+                      color: '#1f2937',
+                      overflow: 'visible',
+                      whiteSpace: 'normal'
+                    }}>
+                      {employee.name}
+                    </h3>
+                    <p style={{ 
+                      color: '#6b7280', 
+                      fontSize: '15px', 
+                      marginBottom: '10px' 
+                    }}>
+                      {employee.position || "Professional"}
+                    </p>
                     <Badge
-                      className={`${departmentColors[employee.department] || 'bg-gray-100 text-gray-700'} border`}
+                      className={departmentColors[employee.department] || 'bg-gray-100 text-gray-700'}
+                      style={{
+                        border: '1px solid',
+                        fontSize: '13px',
+                        padding: '4px 12px',
+                        borderRadius: '5px',
+                        fontWeight: '500',
+                        display: 'inline-block'
+                      }}
                     >
                       {employee.department}
                     </Badge>
@@ -145,39 +217,130 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
             </Card>
 
             {/* Skills Section */}
-            <div className="mt-6">
-              <Card className="border-2">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">All Skills</CardTitle>
-                  <CardDescription>Complete skill profile</CardDescription>
+            <div style={{ marginTop: '20px' }}>
+              <Card style={{ 
+                border: '2px solid #e5e7eb', 
+                borderRadius: '10px' 
+              }}>
+                <CardHeader style={{ 
+                  paddingBottom: '12px', 
+                  padding: '20px 24px' 
+                }}>
+                  <CardTitle style={{ 
+                    fontSize: '20px', 
+                    fontWeight: 'bold',
+                    color: '#1f2937',
+                    marginBottom: '2px'
+                  }}>
+                    All Skills
+                  </CardTitle>
+                  <CardDescription style={{ 
+                    fontSize: '14px',
+                    color: '#6b7280'
+                  }}>
+                    Complete skill profile
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="rounded-lg border overflow-hidden">
-                    <div className="max-h-[400px] overflow-y-auto">
+                <CardContent style={{ 
+                  paddingTop: '12px', 
+                  padding: '0 24px 24px' 
+                }}>
+                  <div style={{ 
+                    borderRadius: '8px', 
+                    border: '1px solid #e5e7eb', 
+                    overflow: 'hidden' 
+                  }}>
+                    <div style={{ maxHeight: '380px', overflowY: 'auto' }}>
                       <Table>
-                        <TableHeader className="sticky top-0 bg-gray-50 z-10">
-                          <TableRow className="hover:bg-gray-50">
-                            <TableHead>Skill name<nav></nav></TableHead>
-                            <TableHead>Level</TableHead>
-                            <TableHead>Category</TableHead>
-                            <TableHead>Hire date</TableHead>
+                        <TableHeader style={{ 
+                          position: 'sticky', 
+                          top: 0, 
+                          backgroundColor: '#f9fafb', 
+                          zIndex: 10,
+                          borderBottom: '1px solid #e5e7eb'
+                        }}>
+                          <TableRow>
+                            <TableHead style={{ 
+                              fontSize: '14px', 
+                              fontWeight: '600', 
+                              padding: '12px 16px',
+                              color: '#111827',
+                              width: '30%'
+                            }}>
+                              Skill name
+                            </TableHead>
+                            <TableHead style={{ 
+                              fontSize: '14px', 
+                              fontWeight: '600', 
+                              padding: '12px 16px',
+                              color: '#111827',
+                              width: '30%'
+                            }}>
+                              Level
+                            </TableHead>
+                            <TableHead style={{ 
+                              fontSize: '14px', 
+                              fontWeight: '600', 
+                              padding: '12px 16px',
+                              color: '#111827',
+                              width: '20%'
+                            }}>
+                              Category
+                            </TableHead>
+                            <TableHead style={{ 
+                              fontSize: '14px', 
+                              fontWeight: '600', 
+                              padding: '12px 16px',
+                              color: '#111827',
+                              width: '20%'
+                            }}>
+                              Hire date
+                            </TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {employee.skills.map((skill) => (
-                            <TableRow key={skill.id} className="hover:bg-gray-50">
-                              <TableCell>{skill.name}</TableCell>
-                              <TableCell>
-                                <StarRating initialRating={skill.level} readonly />
+                            <TableRow 
+                              key={skill.id}
+                              style={{ borderBottom: '1px solid #f3f4f6' }}
+                            >
+                              <TableCell style={{ 
+                                fontSize: '15px', 
+                                padding: '14px 16px', 
+                                fontWeight: '600',
+                                color: '#1f2937'
+                              }}>
+                                {skill.name}
                               </TableCell>
-                              <TableCell>
+                              <TableCell style={{ padding: '14px 16px' }}>
+                                <div style={{ 
+                                  transform: 'scale(1.1)', 
+                                  transformOrigin: 'left',
+                                  display: 'inline-block'
+                                }}>
+                                  <StarRating initialRating={skill.level} readonly />
+                                </div>
+                              </TableCell>
+                              <TableCell style={{ padding: '14px 16px' }}>
                                 <Badge
-                                  className={`${categoryColors[skill.category] || 'bg-gray-100 text-gray-700'} border`}
+                                  className={categoryColors[skill.category] || 'bg-gray-100 text-gray-700'}
+                                  style={{
+                                    border: '1px solid',
+                                    fontSize: '13px',
+                                    padding: '4px 10px',
+                                    borderRadius: '5px',
+                                    fontWeight: '500'
+                                  }}
                                 >
                                   {skill.category}
                                 </Badge>
                               </TableCell>
-                              <TableCell className="text-sm text-muted-foreground">
+                              <TableCell style={{ 
+                                fontSize: '14px', 
+                                color: '#6b7280', 
+                                padding: '14px 16px',
+                                fontWeight: '500'
+                              }}>
                                 {skill.lastUpdated}
                               </TableCell>
                             </TableRow>
@@ -193,13 +356,24 @@ export function EmployeeDetailsModal({ isOpen, onClose, employee }: EmployeeDeta
         </div>
 
         {/* Footer */}
-        <DialogFooter className="p-6 pt-4 border-t">
-          <Button variant="outline" onClick={onClose} className="border-2">
+        <DialogFooter style={{ 
+          padding: '16px 32px', 
+          borderTop: '1px solid #e5e7eb' 
+        }}>
+          <Button 
+            variant="outline" 
+            onClick={onClose}
+            style={{
+              border: '1px solid #d1d5db',
+              fontSize: '14px',
+              padding: '8px 20px',
+              fontWeight: '600',
+              borderRadius: '6px'
+            }}
+          >
             Close
           </Button>
-          <Button className="bg-[#7c3aed] text-white hover:bg-[#6d28d9]">
-            Edit Profile
-          </Button>
+         
         </DialogFooter>
       </DialogContent>
     </Dialog>

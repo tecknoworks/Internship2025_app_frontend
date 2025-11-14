@@ -78,7 +78,6 @@ function AppContent() {
       <div className="flex h-screen bg-slate-50 overflow-hidden">
         <Sidebar currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="flex flex-1 flex-col overflow-hidden">
-          <Header currentPage={currentPage} />
           <main className="flex-1 overflow-y-auto">
             {renderContent()}
           </main>
