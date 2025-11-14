@@ -219,7 +219,8 @@ export function SkillSearchContent() {
   };
 
   return (
-    <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f5', fontFamily: '"Saira", sans-serif' }}>
+  <div>
+      <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f5' }}>
       <div className="flex gap-6">
         {/* Main Content - Left Side */}
         <div className="flex-1 space-y-6" style={{ maxWidth: '1000px' }}>
@@ -230,9 +231,10 @@ export function SkillSearchContent() {
                 className="p-3 rounded-xl shadow-md"
                 style={{ backgroundColor: "#EA2775" }}
               >
-                <Sparkles className="h-7 w-7 text-white" />
+                <Sparkles className="h-5 w-5 text-white" />
+                
               </div>
-            <p className="text-lg ml-1" style={{ color: '#64748b', fontFamily: '"Saira", sans-serif' }}>
+            <p className="text-lg ml-1" style={{ color: '#000000ff' }}>
               Find and explore skills across your organization
             </p>
             </div>
@@ -246,7 +248,7 @@ export function SkillSearchContent() {
               {/* Header */}
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-500 mt-1" style={{ fontFamily: '"Saira", sans-serif' ,fontSize: '15px' }}>Add skills and combine them with AND/OR logic</p>
+                  <p className="text-xs text-gray-500 mt-1" style={{ fontSize: '15px' }}>Add skills and combine them with AND/OR logic</p>
                 </div>
                 {queryItems.length > 0 && (
                   <Button 
@@ -254,7 +256,7 @@ export function SkillSearchContent() {
                     size="sm" 
                     className="text-xs"
                     onClick={handleClearQuery}
-                    style={{ fontFamily: '"Saira", sans-serif' ,marginBottom: '15px' }}
+                    style={{ marginBottom: '15px' }}
                   >
                     Clear Query
                   </Button>
@@ -268,8 +270,8 @@ export function SkillSearchContent() {
                   <div className="flex items-center justify-center h-[60px] text-gray-400">
                     <div className="text-center">
                       <Sparkles className="h-6 w-6 mx-auto mb-1 opacity-50" />
-                      <p className="text-xs font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>No skills added yet</p>
-                      <p className="text-xs mt-0.5 text-gray-400" style={{ fontFamily: '"Saira", sans-serif' }}>Select a skill below to start building your query</p>
+                      <p className="text-xs font-medium">No skills added yet</p>
+                      <p className="text-xs mt-0.5 text-gray-400">Select a skill below to start building your query</p>
                     </div>
                   </div>
                 ) : (
@@ -283,7 +285,7 @@ export function SkillSearchContent() {
                               key={item.id}
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg shadow-sm border-2 border-purple-300 animate-in fade-in zoom-in duration-200"
                             >
-                              <span className="text-xs font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>
+                              <span className="text-xs font-semibold text-gray-900">
                                 {item.icon} {item.label}
                               </span>
                               <button 
@@ -408,13 +410,13 @@ export function SkillSearchContent() {
                 <div className="p-1.5 rounded-lg" style={{ backgroundColor: '#EA2775' ,marginRight: '6px' }}>
                   <Filter className="h-4 w-4 text-white" />
                 </div>
-                <h3 className="text-base font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>Additional Filters</h3>
+                <h3 className="text-base font-semibold text-gray-900">Additional Filters</h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4" style={{ marginTop: '12px' }}>
                 {/* Skill Level */}
                 <div className="space-y-2"> 
-                  <Label htmlFor="skill-level" className="text-xs font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>
+                  <Label htmlFor="skill-level" className="text-xs font-semibold text-gray-900">
                     Minimum Skill Level
                   </Label>
                   <Select value={skillLevel} onValueChange={setSkillLevel}>
@@ -513,7 +515,7 @@ export function SkillSearchContent() {
 
                 {/* Department */}
                 <div className="space-y-2">
-                  <Label htmlFor="department" className="text-xs font-semibold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>
+                  <Label htmlFor="department" className="text-xs font-semibold text-gray-900">
                     Department
                   </Label>
                   <Select value={department} onValueChange={setDepartment}>
@@ -633,10 +635,10 @@ export function SkillSearchContent() {
         </Card>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 justify-start" style={{ marginTop: '20px' }}>
+        <div className="flex gap-3 justify-start" style={{ marginTop: '20px' ,marginLeft: '8px' }}>
           <Button 
             className="h-10 px-6 shadow-md hover:opacity-90 transition-all font-semibold text-sm"
-            style={{ backgroundColor: '#7c3aed', fontFamily: '"Saira", sans-serif' ,marginRight: '12px' }}
+            style={{ backgroundColor: '#7c3aed', marginRight: '12px' }}
             onClick={() => {
               // TODO: Apply filters logic
               console.log('Applying filters:', { queryItems, skillLevel, department });
@@ -648,7 +650,7 @@ export function SkillSearchContent() {
           <Button 
             variant="outline"
             className="h-10 px-8 shadow-sm hover:bg-gray-100 transition-all font-semibold text-sm border-2"
-            style={{ fontFamily: '"Saira", sans-serif' ,
+            style={{
               
     padding: '12px 10px' // 12px sus/jos, 32px stânga/dreapta
 
@@ -667,8 +669,8 @@ export function SkillSearchContent() {
         {/* Results Card */}
         <Card className="shadow-sm border-0" style={{ backgroundColor: '#ffffff', marginTop: '32px' }}>
           <CardHeader className="border-b" style={{ backgroundColor: '#fafbfc' }}>
-            <CardTitle className="text-xl font-semibold" style={{ fontFamily: '"Saira", sans-serif' }}>Search Results</CardTitle>
-            <CardDescription className="text-sm" style={{ fontFamily: '"Saira", sans-serif' }}>
+            <CardTitle className="text-xl font-semibold">Search Results</CardTitle>
+            <CardDescription className="text-sm">
               Showing {sampleData.length} skills matching your criteria
             </CardDescription>
           </CardHeader>
@@ -678,16 +680,16 @@ export function SkillSearchContent() {
               <Table>
                 <TableHeader>
                   <TableRow style={{ backgroundColor: '#f3f4f6' }} className="hover:bg-gray-100">
-                    <TableHead className="font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Skill Name</TableHead>
-                    <TableHead className="font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Rating</TableHead>
-                    <TableHead className="font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Department</TableHead>
-                    <TableHead className="text-right font-semibold text-gray-700" style={{ fontFamily: '"Saira", sans-serif' }}>Actions</TableHead>
+                    <TableHead className="font-semibold text-gray-700">Skill Name</TableHead>
+                    <TableHead className="font-semibold text-gray-700">Rating</TableHead>
+                    <TableHead className="font-semibold text-gray-700">Department</TableHead>
+                    <TableHead className="text-right font-semibold text-gray-700">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sampleData.map((skill) => (
                     <TableRow key={skill.id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>
+                      <TableCell className="font-medium">
                         {skill.skillName}
                       </TableCell>
                       <TableCell>
@@ -697,7 +699,7 @@ export function SkillSearchContent() {
                         <span 
                           className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border"
                           style={{
-                            fontFamily: '"Saira", sans-serif',
+                            
                             backgroundColor: skill.department === 'Engineering' ? '#ede9fe' :
                                            skill.department === 'Analytics' ? '#fce7f3' :
                                            skill.department === 'Design' ? '#ffe4e6' :
@@ -726,7 +728,7 @@ export function SkillSearchContent() {
                           variant="link" 
                           size="sm"
                           className="text-sm"
-                          style={{ color: '#1e1b4b', fontFamily: '"Saira", sans-serif' }}
+                          style={{ color: '#1e1b4b' }}
                           onClick={() => handleViewDetails(skill)}
                         >
                           View Details
@@ -810,13 +812,13 @@ export function SkillSearchContent() {
           <Card className="shadow-md border-0" style={{ backgroundColor: '#ffffff' ,marginTop: '75px' }}>
             <CardContent className="pt-8 pb-8">
               <div className="text-center space-y-3">
-                <p className="text-base font-semibold text-gray-600" style={{ fontFamily: '"Saira", sans-serif' }}>
+                <p className="text-base font-semibold text-gray-600">
                   Total Skills
                 </p>
-                <p className="text-7xl font-bold" style={{ color: '#7c3aed', fontFamily: '"Saira", sans-serif' }}>
+                <p className="text-7xl font-bold" style={{ color: '#7c3aed' }}>
                   {sampleData.length}
                 </p>
-                <p className="text-sm text-gray-500" style={{ fontFamily: '"Saira", sans-serif' }}>
+                <p className="text-sm text-gray-500">
                   Skills in database
                 </p>
               </div>
@@ -826,10 +828,10 @@ export function SkillSearchContent() {
           {/* Skills Distribution Card */}
           <Card className="shadow-md border-0" style={{ backgroundColor: '#ffffff' }}>
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-semibold" style={{ fontFamily: '"Saira", sans-serif' }}>
+              <CardTitle className="text-xl font-semibold">
                 Skills Distribution
               </CardTitle>
-              <CardDescription className="text-sm" style={{ fontFamily: '"Saira", sans-serif' }}>
+              <CardDescription className="text-sm">
                 By department
               </CardDescription>
             </CardHeader>
@@ -887,7 +889,7 @@ export function SkillSearchContent() {
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <p className="text-3xl font-bold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>
+                        <p className="text-3xl font-bold text-gray-900">
                           100%
                         </p>
                       </div>
@@ -900,30 +902,30 @@ export function SkillSearchContent() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#7c3aed' }}></div>
-                      <span className="text-base text-gray-700 font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>Engineering</span>
+                      <span className="text-base text-gray-700 font-medium">Engineering</span>
                     </div>
-                    <span className="text-base font-bold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>30%</span>
+                    <span className="text-base font-bold text-gray-900">30%</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#ec4899' }}></div>
-                      <span className="text-base text-gray-700 font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>Analytics</span>
+                      <span className="text-base text-gray-700 font-medium">Analytics</span>
                     </div>
-                    <span className="text-base font-bold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>20%</span>
+                    <span className="text-base font-bold text-gray-900">20%</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#f43f5e' }}></div>
-                      <span className="text-base text-gray-700 font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>Design</span>
+                      <span className="text-base text-gray-700 font-medium">Design</span>
                     </div>
-                    <span className="text-base font-bold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>15%</span>
+                    <span className="text-base font-bold text-gray-900">15%</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#94a3b8' }}></div>
-                      <span className="text-base text-gray-700 font-medium" style={{ fontFamily: '"Saira", sans-serif' }}>Others</span>
+                      <span className="text-base text-gray-700 font-medium">Others</span>
                     </div>
-                    <span className="text-base font-bold text-gray-900" style={{ fontFamily: '"Saira", sans-serif' }}>35%</span>
+                    <span className="text-base font-bold text-gray-900">35%</span>
                   </div>
                 </div>
               </div>
@@ -940,6 +942,7 @@ export function SkillSearchContent() {
           skill={selectedSkill}
         />
       )}
+    </div>
     </div>
   );
 }

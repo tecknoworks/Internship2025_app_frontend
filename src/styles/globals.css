@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -138,7 +142,8 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+  @apply bg-background text-foreground;
+  font-family: 'Saira', 'Smooch Sans', Arial, Helvetica, sans-serif !important;
   }
 }
 

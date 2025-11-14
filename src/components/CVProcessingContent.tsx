@@ -198,11 +198,12 @@ export function CVProcessingContent() {
   ];
 
   return (
-    <div
-      className="h-full overflow-y-auto p-8"
-      style={{ backgroundColor: "#f6f5ff" }}
-    >
-      <div className="space-y-6" style={{ maxWidth: '1400px' }}>
+  <div>
+      <div
+        className="h-full overflow-y-auto p-8"
+        style={{ backgroundColor: "#f6f5ff" }}
+      >
+        <div className="space-y-6" style={{ maxWidth: '1400px' }}>
         {/* Page Title */}
         <div className="space-y-2">
           <div className="flex items-center gap-3">
@@ -211,9 +212,9 @@ export function CVProcessingContent() {
             </div>
             <h1
               className="font-semibold"
-              style={{ fontSize: '2.05rem', lineHeight: 1.15, color: '#1e1b4b',marginLeft: '0.5rem' }}
+              style={{ fontSize: '1.75rem', lineHeight: 1.15, color: '#1e1b4b',marginLeft: '0.5rem' }}
             >
-              Upload and Process CVs
+              Upload and process CV
             </h1>
           </div>
           <p className="text-muted-foreground" style={{ fontSize: '1.125rem' }}>
@@ -460,5 +461,6 @@ export function CVProcessingContent() {
         </Card>
       </div>
     </div>
+  </div>
   );
 }

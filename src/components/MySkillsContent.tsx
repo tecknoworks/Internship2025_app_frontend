@@ -142,25 +142,25 @@ export function MySkillsContent() {
   ];
 
   return (
-    <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f7' }}>
-      <div className="space-y-6" style={{ maxWidth: '1400px' }}>
-        {/* Page Title */}
-        <div className="space-y-2">
+  <div className="h-full overflow-y-auto p-8" style={{ backgroundColor: '#f5f5f7' }}>
+    <div className="space-y-6" style={{ maxWidth: '1400px' }}>
+      {/* Page Title */}
+      <div className="space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg" style={{ backgroundColor: '#7c3aed' }}>
+              <div className="p-2 rounded-lg" style={{ backgroundColor: '#5900b1ff' }}>
                 <Award className="h-6 w-6 text-white" />
               </div>
               <h1
                 className="font-semibold"
-                style={{ color: '#7c3aed', fontSize: '1.45rem', lineHeight: '1.1',marginLeft: '0.5rem' }}
+                style={{ color: '#000000ff', fontSize: '1.35rem', lineHeight: '1.1',marginLeft: '0.5rem' }}
               >
-                My Skills
+                My skills
               </h1>
             </div>
             <Button
               onClick={() => setIsAddModalOpen(true)}
-              style={{ backgroundColor: '#22c55e' }}
+              style={{ backgroundColor: '#c52263ff' }}
               className="hover:opacity-90 text-white"
             >
               <Plus className="h-4 w-4 mr-2" />
@@ -176,9 +176,9 @@ export function MySkillsContent() {
         <Card className="border shadow-sm bg-white">
           <CardContent className="pt-6">
             <div className="flex items-center gap-6">
-              <Avatar className="h-20 w-20" style={{ backgroundColor: '#7c3aed' }}>
+              <Avatar className="h-20 w-20" style={{ backgroundColor: '#4801c2ff' }}>
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="text-2xl font-semibold text-white" style={{ backgroundColor: '#7c3aed' }}>
+                <AvatarFallback className="text-2xl font-semibold text-white" style={{ backgroundColor: '#5900b1ff' }}>
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -189,14 +189,14 @@ export function MySkillsContent() {
                   {user.department}
                 </Badge>
               </div>
-                <div className="text-right">
-                  <p
-                    className="text-5xl font-semibold"
-                    style={{ color: '#7c3aed', fontSize: '1.8rem', lineHeight: '1.1' }}
-                  >
-                    {skills.length}
-                  </p>
-                  <p className="text-base text-muted-foreground">Total Skills</p>
+              <div className="text-right">
+                <p
+                  className="text-5xl font-semibold"
+                  style={{ color: '#7c3aed', fontSize: '1.8rem', lineHeight: '1.1' }}
+                >
+                  {skills.length}
+                </p>
+                <p className="text-base text-muted-foreground">Total Skills</p>
               </div>
             </div>
           </CardContent>
@@ -320,7 +320,6 @@ export function MySkillsContent() {
             </div>
           </CardContent>
         </Card>
-      </div>
 
       {/* Edit Skill Modal */}
       {selectedSkill && (
@@ -384,5 +383,6 @@ export function MySkillsContent() {
         </DialogContent>
       </Dialog>
     </div>
+  </div>
   );
 }
